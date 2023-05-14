@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Inscricoes.HttpService", "Inscricoes\OtelDemo.Inscricoes.HttpService\OtelDemo.Inscricoes.HttpService.csproj", "{26C6558A-FD72-4383-9364-E2EAEF6590F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "inscricoes", "inscricoes", "{F6FD090C-82CC-4DBD-B42E-F293AFE868EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Common", "Common\OtelDemo.Common\OtelDemo.Common.csproj", "{5E8F4B71-8933-4059-BEC9-CADA41A8782A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Inscricoes.BrokerConsumer", "Inscricoes\OtelDemo.Inscricoes.BrokerConsumer\OtelDemo.Inscricoes.BrokerConsumer.csproj", "{0BA41433-029D-47B6-8EC1-C34BC961E555}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26C6558A-FD72-4383-9364-E2EAEF6590F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C6558A-FD72-4383-9364-E2EAEF6590F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26C6558A-FD72-4383-9364-E2EAEF6590F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26C6558A-FD72-4383-9364-E2EAEF6590F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E8F4B71-8933-4059-BEC9-CADA41A8782A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E8F4B71-8933-4059-BEC9-CADA41A8782A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E8F4B71-8933-4059-BEC9-CADA41A8782A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E8F4B71-8933-4059-BEC9-CADA41A8782A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{26C6558A-FD72-4383-9364-E2EAEF6590F7} = {F6FD090C-82CC-4DBD-B42E-F293AFE868EB}
+		{0BA41433-029D-47B6-8EC1-C34BC961E555} = {F6FD090C-82CC-4DBD-B42E-F293AFE868EB}
+	EndGlobalSection
+EndGlobal
