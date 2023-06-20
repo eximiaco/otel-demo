@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Common", "Common\O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Inscricoes.BrokerConsumer", "Inscricoes\OtelDemo.Inscricoes.BrokerConsumer\OtelDemo.Inscricoes.BrokerConsumer.csproj", "{0BA41433-029D-47B6-8EC1-C34BC961E555}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Domain", "Inscricoes\OtelDemo.Domain\OtelDemo.Domain.csproj", "{95395A4F-2D0A-4569-93F5-B908953A01F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +28,14 @@ Global
 		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BA41433-029D-47B6-8EC1-C34BC961E555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95395A4F-2D0A-4569-93F5-B908953A01F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95395A4F-2D0A-4569-93F5-B908953A01F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95395A4F-2D0A-4569-93F5-B908953A01F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95395A4F-2D0A-4569-93F5-B908953A01F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{26C6558A-FD72-4383-9364-E2EAEF6590F7} = {F6FD090C-82CC-4DBD-B42E-F293AFE868EB}
 		{0BA41433-029D-47B6-8EC1-C34BC961E555} = {F6FD090C-82CC-4DBD-B42E-F293AFE868EB}
+		{95395A4F-2D0A-4569-93F5-B908953A01F9} = {F6FD090C-82CC-4DBD-B42E-F293AFE868EB}
 	EndGlobalSection
 EndGlobal

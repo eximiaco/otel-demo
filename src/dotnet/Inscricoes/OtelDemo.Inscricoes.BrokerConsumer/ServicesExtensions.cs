@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Confluent.Kafka;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Npgsql;
@@ -14,8 +15,9 @@ using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;
 using Silverback.Messaging.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
+namespace OtelDemo.Inscricoes.BrokerConsumer;
 
 internal static class ServicesExtensions
     {
@@ -43,7 +45,7 @@ internal static class ServicesExtensions
                 {
                     builder
                         .AddSource(settings.ServiceName)
-                        .AddSource("Silverback.Integration.Produce")
+                        .AddSource("Silverback.Integration.Consume")
                         .AddHttpClientInstrumentation(o=> 
                             o.FilterHttpWebRequest = request => 
                                 !request.Address.AbsoluteUri.Contains("logs-prod-015.grafana.net") || !request.Address.AbsoluteUri.Contains("events/raw"))
@@ -218,11 +220,18 @@ internal static class ServicesExtensions
                 .WithConnectionToMessageBroker(config => config.AddKafka())
                 .AddKafkaEndpoints(endpoints => endpoints
                     .Configure(config => config.Configure(kafkaConfig))
-                    .AddOutbound<InscricaoRealizadaEvento>(endpoint => endpoint
-                        .ProduceTo("inscricoes")
-                        .WithKafkaKey<InscricaoRealizadaEvento>(envelope => envelope.Message!.Id)
-                        .SerializeAsJson(serializer => serializer.UseFixedType<InscricaoRealizadaEvento>())
-                        .DisableMessageValidation()));
+                    .AddInbound(endpoint => endpoints.AddInbound(endpoint =>
+                        endpoint
+                            .ConsumeFrom("inscricoes")
+                            .Configure(config =>
+                            {
+                                config.GroupId = kafkaConfig.Connection.GroupId;
+                                config.AutoOffsetReset = AutoOffsetReset.Latest;
+                            })
+                            .DisableMessageValidation()
+                            .DeserializeJson(serializer => serializer.UseFixedType<InscricaoRealizadaEvento>()))))
+                .AddScopedSubscriber<InscricaoRealizadaEvento>();
+            services.AddScoped<SilverbackServiceBus>();
             return services;
         }
     }

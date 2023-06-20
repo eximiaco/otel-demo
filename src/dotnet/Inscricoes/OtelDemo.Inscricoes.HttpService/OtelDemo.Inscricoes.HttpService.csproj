@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>87522ea9-fb4a-4ded-b4f7-a37c0a54ed33</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,11 +16,15 @@
 
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="2.39.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+        <PackageReference Include="Npgsql.OpenTelemetry" Version="7.0.4" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
         <PackageReference Include="Serilog.Enrichers.OpenTelemetry" Version="1.0.1" />
         <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+        <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+        <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.1.0" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
         <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
         <PackageReference Include="OpenTelemetry" Version="1.4.0" />
@@ -41,10 +46,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Common\OtelDemo.Common\OtelDemo.Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers\" />
+      <ProjectReference Include="..\OtelDemo.Domain\OtelDemo.Domain.csproj" />
     </ItemGroup>
     
 </Project>

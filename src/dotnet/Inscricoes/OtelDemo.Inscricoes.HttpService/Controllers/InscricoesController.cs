@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OtelDemo.Inscricoes.HttpService.Domain.Inscricoes.Comandos;
+using OtelDemo.Inscricoes.Domain.Inscricoes.Comandos;
 
-namespace OtelDemo.Inscricoes.HttpService.Domain.Inscricoes;
+namespace OtelDemo.Inscricoes.HttpService.Controllers;
 
 [ApiController]
 //[Authorize()]
@@ -19,7 +19,8 @@ public sealed class InscricoesController : ControllerBase
     public record NovaInscricaoModel(string CpfAluno, string CpfResponsavel, int CodigoTurma);
     
     [HttpPost]
-    public async Task<IActionResult> RealizarInscricao([FromBody]NovaInscricaoModel input, CancellationToken cancellationToken)
+    public async Task<IActionResult> RealizarInscricao(
+        [FromBody]NovaInscricaoModel input, CancellationToken cancellationToken)
     {
         var comando = RealizarInscricaoComando.Criar(
             input.CpfAluno, 

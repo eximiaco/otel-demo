@@ -1,0 +1,17 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OtelDemo.Inscricoes.Domain.Inscricoes;
+
+namespace OtelDemo.Inscricoes.Domain.Infrastructure.Configurations;
+
+public class TurmasConfigurations: IEntityTypeConfiguration<Turma>
+{
+    public void Configure(EntityTypeBuilder<Turma> builder)
+    {
+        builder.ToTable("turmas");
+        builder.HasKey(p => p.Id);
+        builder.Property(c => c.Vagas);
+        //builder.Property<DateTime>("DataCadastro");
+        //builder.Property<DateTime>("DataUltimaAlteracao");
+    }
+}

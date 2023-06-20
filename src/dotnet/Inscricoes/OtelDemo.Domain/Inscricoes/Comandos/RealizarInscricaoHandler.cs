@@ -1,25 +1,25 @@
 ﻿using CSharpFunctionalExtensions;
 using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
-using OtelDemo.Inscricoes.HttpService.Domain.Inscricoes.Eventos;
-using Silverback.Messaging.Publishing;
+using OtelDemo.Common.ServiceBus;
+using OtelDemo.Inscricoes.Domain.Inscricoes.Eventos;
 
-namespace OtelDemo.Inscricoes.HttpService.Domain.Inscricoes.Comandos;
+namespace OtelDemo.Inscricoes.Domain.Inscricoes.Comandos;
 
 public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 {
     private readonly ITelemetryFactory _telemetryFactory;
     private readonly InscricoesRepositorio _inscricoesRepositorio;
-    private readonly IPublisher _publisher;
+    private readonly IServiceBus _serviceBus;
 
     public RealizarInscricaoHandler(
         ITelemetryFactory telemetryFactory,
         InscricoesRepositorio inscricoesRepositorio,
-        IPublisher publisher)
+        IServiceBus serviceBus)
     {
         _telemetryFactory = telemetryFactory;
         _inscricoesRepositorio = inscricoesRepositorio;
-        _publisher = publisher;
+        _serviceBus = serviceBus;
     }
     
     public async Task<Result> Executar(RealizarInscricaoComando comando, CancellationToken cancellationToken)
@@ -56,17 +56,17 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
             return Result.Failure(inscricao.Error);
         }
             
-        _inscricoesRepositorio.Adicionar(inscricao.Value);
+        await _inscricoesRepositorio.Adicionar(inscricao.Value);
         await _inscricoesRepositorio.UnitOfWork.Salvar(cancellationToken);
         
         activity.AddInformationEvent("Notificando contexto sobre inscrição {inscricao} realizada",
             new {inscricao = inscricao.Value.Id});
-        await _publisher.PublishAsync(new InscricaoRealizadaEvento(inscricao.Value.Id, inscricao.Value.Responsavel));
+        await _serviceBus.PublishAsync(new InscricaoRealizadaEvento(inscricao.Value.Id, inscricao.Value.Responsavel));
         
         activity
             .AddTag("inscricao", inscricao.Value.Id)
             .SetSucess("Inscricao {inscricao} realizada com sucesso", new { inscricao = inscricao.Value.Id.ToString()});
-        
+
         return Result.Success();
     }
 }

@@ -1,0 +1,5 @@
+docker build -t gabrieleximia/otel_db:v[XXX] .
+
+docker tag gabrieleximia/otel_db:v[XXX] gabrieleximia/otel_db:v[XXXX]-release
+
+docker push gabrieleximia/otel_db:v[XXXX]-release

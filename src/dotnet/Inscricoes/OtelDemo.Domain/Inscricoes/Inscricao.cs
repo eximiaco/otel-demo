@@ -1,9 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
+using Entity = OtelDemo.Common.Entity;
 
-namespace OtelDemo.Inscricoes.HttpService.Domain.Inscricoes;
+namespace OtelDemo.Inscricoes.Domain.Inscricoes;
 
-public sealed class Inscricao
+public sealed class Inscricao : Entity
 {
+    private Inscricao(){}
     private Inscricao(Guid id, string aluno, string responsavel, Turma turma)
     {
         Id = id;

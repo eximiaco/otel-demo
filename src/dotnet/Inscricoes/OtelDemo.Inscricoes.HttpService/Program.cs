@@ -24,7 +24,8 @@ try
         .AddWorkersServices(builder.Configuration)
         .AddOptions()
         .AddCaching()
-        .AddMessageBroker()
+        .AddMessageBroker(builder.Configuration)
+        .AddTransient<TenantMiddleware>()
         .AddControllers(o =>
         {
             o.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -42,6 +43,7 @@ try
     app.UseHealthChecks("/health-check");
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseTenantDbContext();
     app.MapControllers();
     app.Run();
     return 0;

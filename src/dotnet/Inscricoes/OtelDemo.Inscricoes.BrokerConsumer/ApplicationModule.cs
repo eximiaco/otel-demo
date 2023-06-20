@@ -6,7 +6,7 @@ using OtelDemo.Common.ServiceBus.Silverback;
 using OtelDemo.Common.Tenancy;
 using OtelDemo.Inscricoes.Domain.Infrastructure;
 
-namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
+namespace OtelDemo.Inscricoes.BrokerConsumer;
 
 public class ApplicationModule: Autofac.Module
 {
