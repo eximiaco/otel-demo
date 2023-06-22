@@ -61,3 +61,17 @@ services:
     ports:
       # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
+      
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+    volumes:
+      - ./postgres/data:/var/lib/posgresql/data
+    ports:
+      - "5432:5432"
+#    networks:
+#      - postgres
+    restart: unless-stopped

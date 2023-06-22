@@ -59,10 +59,9 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
         await _inscricoesRepositorio.Adicionar(inscricao.Value);
         await _inscricoesRepositorio.UnitOfWork.Salvar(cancellationToken);
         
-        activity.AddInformationEvent("Notificando contexto sobre inscrição {inscricao} realizada",
-            new {inscricao = inscricao.Value.Id});
-        await _serviceBus.PublishAsync(new InscricaoRealizadaEvento(inscricao.Value.Id, inscricao.Value.Responsavel));
-        
+        // activity.AddInformationEvent("Notificando contexto sobre inscrição {inscricao} realizada",
+        //     new {inscricao = inscricao.Value.Id});
+
         activity
             .AddTag("inscricao", inscricao.Value.Id)
             .SetSucess("Inscricao {inscricao} realizada com sucesso", new { inscricao = inscricao.Value.Id.ToString()});

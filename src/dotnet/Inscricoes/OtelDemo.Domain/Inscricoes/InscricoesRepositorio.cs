@@ -46,4 +46,9 @@ public sealed class InscricoesRepositorio : IService<InscricoesRepositorio>
         await _dbContext.Get().Inscricoes.AddAsync(inscricao);
         activity.AddInformationEvent("Inscricao adicionada no repositorio {inscricao}", new { inscricao = inscricao.Id.ToString() });
     }
+
+    public async Task<Inscricao> Recuperar(Guid comandoInscricaoId)
+    {
+        throw new NotImplementedException();
+    }
 }
