@@ -9,7 +9,7 @@ using OpenTelemetry.Trace;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
-using OtelDemo.Inscricoes.Domain.Inscricoes.Eventos;
+using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;

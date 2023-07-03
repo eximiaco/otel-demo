@@ -4,7 +4,7 @@ using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
 using OtelDemo.Common.Tenancy;
-using OtelDemo.Inscricoes.Domain.Infrastructure;
+using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 namespace OtelDemo.Inscricoes.BrokerConsumer;
 

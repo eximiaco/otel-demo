@@ -1,6 +1,6 @@
 ﻿using OtelDemo.Common;
 
-namespace OtelDemo.Inscricoes.Domain.Inscricoes.Eventos;
+namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
 
 public class InscricaoRealizadaEvento: INotification
 {

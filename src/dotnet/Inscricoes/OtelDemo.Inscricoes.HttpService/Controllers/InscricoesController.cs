@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using OtelDemo.Inscricoes.Domain.Inscricoes.Comandos;
+using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
 
 namespace OtelDemo.Inscricoes.HttpService.Controllers;
 

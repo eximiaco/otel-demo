@@ -4,9 +4,9 @@ using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.Tenancy;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.Domain.Infrastructure;
+using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
-namespace OtelDemo.Inscricoes.Domain.Inscricoes;
+namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
 
 public sealed class InscricoesRepositorio : IService<InscricoesRepositorio>
 {

@@ -1,4 +1,4 @@
-﻿namespace OtelDemo.Inscricoes.TabelaValores;
+﻿namespace OtelDemo.Inscricoes.FinanceiroContext;
 
 public sealed class TabelaMensalidade
 {

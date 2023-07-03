@@ -10,12 +10,12 @@ using OpenTelemetry.Trace;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
-using OtelDemo.Inscricoes.Domain.Inscricoes.Eventos;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;
 using Silverback.Messaging.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
 
 namespace OtelDemo.Inscricoes.BrokerConsumer;
 

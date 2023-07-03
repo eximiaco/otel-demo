@@ -1,7 +1,7 @@
 ﻿using OtelDemo.Common;
 using OtelDemo.Common.ServiceBus;
 
-namespace OtelDemo.Inscricoes.Domain.Infrastructure;
+namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 static class ServiceBusExtension
 {

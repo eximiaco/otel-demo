@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace OtelDemo.Inscricoes.Domain.Infrastructure;
+namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 public static class DataContextExtensions
 {

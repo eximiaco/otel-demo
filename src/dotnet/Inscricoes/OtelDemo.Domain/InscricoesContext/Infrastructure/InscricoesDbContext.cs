@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.Domain.Infrastructure.Configurations;
-using OtelDemo.Inscricoes.Domain.Inscricoes;
+using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
+using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.EfMappings;
 
-namespace OtelDemo.Inscricoes.Domain.Infrastructure;
+namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 public class InscricoesDbContext: DbContext, IUnitOfWork
 {

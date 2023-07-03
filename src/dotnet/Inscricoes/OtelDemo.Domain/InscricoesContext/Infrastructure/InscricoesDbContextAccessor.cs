@@ -1,6 +1,6 @@
 ﻿using OtelDemo.Common.Tenancy;
 
-namespace OtelDemo.Inscricoes.Domain.Infrastructure;
+namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 public sealed class InscricoesDbContextAccessor: IEFDbContextAccessor<InscricoesDbContext>
 {

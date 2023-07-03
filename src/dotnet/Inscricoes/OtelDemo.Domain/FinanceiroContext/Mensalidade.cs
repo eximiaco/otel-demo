@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Entity = OtelDemo.Common.Entity;
 
-namespace OtelDemo.Inscricoes.Mensalidades;
+namespace OtelDemo.Inscricoes.FinanceiroContext;
 
 public sealed class Mensalidade : Entity
 {

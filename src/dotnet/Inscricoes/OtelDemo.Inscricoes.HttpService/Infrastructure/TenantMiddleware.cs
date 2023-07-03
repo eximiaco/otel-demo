@@ -1,5 +1,5 @@
 ﻿using OtelDemo.Common.Tenancy;
-using OtelDemo.Inscricoes.Domain.Infrastructure;
+using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
 

@@ -2,9 +2,8 @@
 using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Inscricoes.Domain.Inscricoes.Eventos;
 
-namespace OtelDemo.Inscricoes.Domain.Inscricoes.Comandos;
+namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
 
 public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 {

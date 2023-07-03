@@ -1,7 +1,7 @@
 ﻿using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.UoW;
 
-namespace OtelDemo.Inscricoes.Domain.Infrastructure;
+namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 public class UnitOfWorkMock : IUnitOfWork
 {

@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace OtelDemo.Inscricoes.Domain.Inscricoes.Comandos;
+namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
 
 public record RealizarInscricaoComando
 {

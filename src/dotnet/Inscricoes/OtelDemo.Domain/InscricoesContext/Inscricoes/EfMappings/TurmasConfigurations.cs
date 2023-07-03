@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OtelDemo.Inscricoes.Domain.Inscricoes;
 
-namespace OtelDemo.Inscricoes.Domain.Infrastructure.Configurations;
+namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.EfMappings;
 
 public class TurmasConfigurations: IEntityTypeConfiguration<Turma>
 {
