@@ -2,5 +2,5 @@
 
 public interface IUnitOfWork
 {
-    Task Salvar(CancellationToken cancellationToken);
+    Task Commit(CancellationToken cancellationToken);
 }

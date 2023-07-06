@@ -1,16 +1,16 @@
-﻿using OtelDemo.Common.Tenancy;
+﻿using OtelDemo.Common.UoW;
 using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
 
 public class TenantMiddleware : IMiddleware
 {
-    private readonly IEFDbContextFactory<InscricoesDbContext> _factory;
-    private readonly IEFDbContextAccessor<InscricoesDbContext> _accessor;
+    private readonly IEfDbContextFactory<InscricoesDbContext> _factory;
+    private readonly IEfDbContextAccessor<InscricoesDbContext> _accessor;
 
     public TenantMiddleware(
-        IEFDbContextFactory<InscricoesDbContext> factory,
-         IEFDbContextAccessor<InscricoesDbContext> accessor)
+        IEfDbContextFactory<InscricoesDbContext> factory,
+         IEfDbContextAccessor<InscricoesDbContext> accessor)
     {
         _factory = factory;
         _accessor = accessor;
@@ -23,7 +23,7 @@ public class TenantMiddleware : IMiddleware
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        using (var contexto = await _factory.CriarAsync(""))
+        using (var contexto = await _factory.CriarAsync(context.Request.Headers["x-tenant"]))
         {
             _accessor.Register(contexto);
             // Call the next delegate/middleware in the pipeline.

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Common.Tenancy;
+using OtelDemo.Common.UoW;
 
 namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
-public sealed class InscricoesDbContextFactory: IEFDbContextFactory<InscricoesDbContext>
+public sealed class InscricoesDbContextFactory: IEfDbContextFactory<InscricoesDbContext>
 {
     private readonly IConfiguration _configuration;
     private readonly IServiceBus _serviceBus;

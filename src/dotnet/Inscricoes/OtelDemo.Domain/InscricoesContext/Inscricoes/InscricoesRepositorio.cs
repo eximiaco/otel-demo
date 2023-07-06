@@ -1,8 +1,9 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Data.SqlClient;
+using CSharpFunctionalExtensions;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
-using OtelDemo.Common.Tenancy;
 using OtelDemo.Common.UoW;
 using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
@@ -11,39 +12,43 @@ namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
 public sealed class InscricoesRepositorio : IService<InscricoesRepositorio>
 {
     private readonly ITelemetryFactory _telemetryFactory;
-    private readonly IEFDbContextAccessor<InscricoesDbContext> _dbContext;
+    private readonly IEfDbContextAccessor<InscricoesDbContext> _dbContext;
 
     public InscricoesRepositorio(
         ITelemetryFactory telemetryFactory,
-        IEFDbContextAccessor<InscricoesDbContext> dbContext)
+        IEfDbContextAccessor<InscricoesDbContext> dbContext)
     {
         _telemetryFactory = telemetryFactory;
         _dbContext = dbContext;
     }
 
-    public IUnitOfWork UnitOfWork => _dbContext.Get();
-    
     public async Task<bool> AlunoExiste(string aluno)
     {
-        return true;
+        var result = await _dbContext.Get().Database.GetDbConnection()
+            .QueryFirstOrDefaultAsync<string>("SELECT codigo FROM public.alunos WHERE codigo = @aluno",
+            new {aluno});
+        return result == aluno;
     }
     
     public async Task<bool> ResponsavelExiste(string responsavel)
     {
-        return true;
+        var result = await _dbContext.Get().Database.GetDbConnection()
+            .QueryFirstOrDefaultAsync<string>("SELECT codigo FROM public.responsaveis WHERE codigo = @responsavel",
+                new {responsavel});
+        return result == responsavel;
     }
 
-    public async Task<Maybe<Turma>> RecuperarTurma(int id)
+    public async Task<Maybe<Turma>> RecuperarTurma(int id, CancellationToken cancellationToken)
     {
-        var turma = await _dbContext.Get().Turmas.FirstOrDefaultAsync(c => c.Id == id);
+        var turma = await _dbContext.Get().Turmas.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         return turma ?? Maybe<Turma>.None;
     }
 
-    public async Task Adicionar(Inscricao inscricao)
+    public async Task Adicionar(Inscricao inscricao, CancellationToken cancellationToken)
     {
         using var activity = _telemetryFactory.Create($"{nameof(InscricoesRepositorio)}.{nameof(Adicionar)}");
         activity.AddTag("inscricao", inscricao.Id.ToString());
-        await _dbContext.Get().Inscricoes.AddAsync(inscricao);
+        await _dbContext.Get().Inscricoes.AddAsync(inscricao, cancellationToken);
         activity.AddInformationEvent("Inscricao adicionada no repositorio {inscricao}", new { inscricao = inscricao.Id.ToString() });
     }
 

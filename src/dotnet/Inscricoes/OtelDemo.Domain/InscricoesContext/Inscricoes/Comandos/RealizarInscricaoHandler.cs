@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
-using OtelDemo.Common.ServiceBus;
+using OtelDemo.Common.UoW;
 
 namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
 
@@ -9,16 +9,16 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 {
     private readonly ITelemetryFactory _telemetryFactory;
     private readonly InscricoesRepositorio _inscricoesRepositorio;
-    private readonly IServiceBus _serviceBus;
+    private readonly IUnitOfWork _unitOfWork;
 
     public RealizarInscricaoHandler(
         ITelemetryFactory telemetryFactory,
         InscricoesRepositorio inscricoesRepositorio,
-        IServiceBus serviceBus)
+        IUnitOfWork unitOfWork)
     {
         _telemetryFactory = telemetryFactory;
         _inscricoesRepositorio = inscricoesRepositorio;
-        _serviceBus = serviceBus;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Result> Executar(RealizarInscricaoComando comando, CancellationToken cancellationToken)
@@ -41,7 +41,7 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
             return Result.Failure("Responsável inválido");
         }
         
-        var turma = await _inscricoesRepositorio.RecuperarTurma(comando.Turma);
+        var turma = await _inscricoesRepositorio.RecuperarTurma(comando.Turma, cancellationToken);
         if (turma.HasNoValue)
         {
             activity.SetError("Falha ao realizar inscricao [{error}]", new { error = "Turma inválida"});
@@ -55,11 +55,8 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
             return Result.Failure(inscricao.Error);
         }
             
-        await _inscricoesRepositorio.Adicionar(inscricao.Value);
-        await _inscricoesRepositorio.UnitOfWork.Salvar(cancellationToken);
-        
-        // activity.AddInformationEvent("Notificando contexto sobre inscrição {inscricao} realizada",
-        //     new {inscricao = inscricao.Value.Id});
+        await _inscricoesRepositorio.Adicionar(inscricao.Value, cancellationToken);
+        await _unitOfWork.Commit(cancellationToken);
 
         activity
             .AddTag("inscricao", inscricao.Value.Id)

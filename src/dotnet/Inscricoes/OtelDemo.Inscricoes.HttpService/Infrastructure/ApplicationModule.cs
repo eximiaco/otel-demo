@@ -3,7 +3,7 @@ using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
-using OtelDemo.Common.Tenancy;
+using OtelDemo.Common.UoW;
 using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
 namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
@@ -19,12 +19,17 @@ public class ApplicationModule: Autofac.Module
 
         builder
             .RegisterType<InscricoesDbContextFactory>()
-            .As<IEFDbContextFactory<InscricoesDbContext>>()
+            .As<IEfDbContextFactory<InscricoesDbContext>>()
             .InstancePerLifetimeScope();
 
         builder
             .RegisterType<InscricoesDbContextAccessor>()
-            .As<IEFDbContextAccessor<InscricoesDbContext>>()
+            .As<IEfDbContextAccessor<InscricoesDbContext>>()
+            .InstancePerLifetimeScope();
+        
+        builder
+            .RegisterType<EfUnitOfWork>()
+            .As<IUnitOfWork>()
             .InstancePerLifetimeScope();
         
         builder

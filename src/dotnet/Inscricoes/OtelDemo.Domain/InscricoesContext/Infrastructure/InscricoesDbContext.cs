@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Common.UoW;
 using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
 using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.EfMappings;
 
 namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
-public class InscricoesDbContext: DbContext, IUnitOfWork
+public class InscricoesDbContext: DbContext
 {
     private readonly IServiceBus _serviceBus;
     public const string DEFAULT_SCHEMA = "inscricoes";
@@ -22,8 +21,8 @@ public class InscricoesDbContext: DbContext, IUnitOfWork
     
     public DbSet<Inscricao> Inscricoes { get; set; }
     public DbSet<Turma> Turmas { get; set; }
-    
-    public async Task Salvar(CancellationToken cancellationToken)
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         try
         {
@@ -39,6 +38,7 @@ public class InscricoesDbContext: DbContext, IUnitOfWork
             }
             var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             await _serviceBus.DispatchDomainEventsAsync(this).ConfigureAwait(false);
+            return result;
         }
         catch (DbUpdateException e)
         {
@@ -48,7 +48,6 @@ public class InscricoesDbContext: DbContext, IUnitOfWork
         {
             throw;
         }
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

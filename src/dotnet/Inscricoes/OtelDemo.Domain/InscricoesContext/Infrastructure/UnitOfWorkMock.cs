@@ -12,9 +12,9 @@ public class UnitOfWorkMock : IUnitOfWork
         _telemetryFactory = telemetryFactory;
     }
     
-    public Task Salvar(CancellationToken cancellationToken)
+    public Task Commit(CancellationToken cancellationToken)
     {
-        var activity = _telemetryFactory.Create($"{nameof(UnitOfWorkMock)}.{nameof(Salvar)}");
+        var activity = _telemetryFactory.Create($"{nameof(UnitOfWorkMock)}.{nameof(Commit)}");
         activity.SetSucess("Commit realizado", new{});
         return Task.CompletedTask;
     }

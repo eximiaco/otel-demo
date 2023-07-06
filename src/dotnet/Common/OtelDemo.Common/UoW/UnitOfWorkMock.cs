@@ -2,7 +2,7 @@
 
 public class UnitOfWorkMock : IUnitOfWork
 {
-    public Task Salvar(CancellationToken cancellationToken)
+    public Task Commit(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }

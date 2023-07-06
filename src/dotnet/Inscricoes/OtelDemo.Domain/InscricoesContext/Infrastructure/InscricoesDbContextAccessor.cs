@@ -1,8 +1,8 @@
-﻿using OtelDemo.Common.Tenancy;
+﻿using OtelDemo.Common.UoW;
 
 namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
-public sealed class InscricoesDbContextAccessor: IEFDbContextAccessor<InscricoesDbContext>
+public sealed class InscricoesDbContextAccessor: IEfDbContextAccessor<InscricoesDbContext>
 {
     private InscricoesDbContext _contexto = null!;
     private bool _disposed = false;

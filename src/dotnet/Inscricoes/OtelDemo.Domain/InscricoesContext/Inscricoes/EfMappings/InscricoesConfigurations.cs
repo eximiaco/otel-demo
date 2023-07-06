@@ -17,6 +17,7 @@ public class InscricoesConfigurations: IEntityTypeConfiguration<Inscricao>
             .HasForeignKey("turma")
             .HasPrincipalKey(c=> c.Id)
             .IsRequired(true);
+        builder.Ignore(c => c.Ativa);
         //builder.Property<DateTime>("DataCadastro");
         //builder.Property<DateTime>("DataUltimaAlteracao");
     }
