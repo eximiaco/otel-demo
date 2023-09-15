@@ -5,6 +5,8 @@ using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
 using OtelDemo.Common.UoW;
 using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Telemetria;
+using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 
 namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
 
@@ -39,5 +41,6 @@ public class ApplicationModule: Autofac.Module
         
         builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().InstancePerLifetimeScope();
         builder.RegisterType<TelemetryFactory>().As<ITelemetryFactory>().InstancePerLifetimeScope();
+        builder.RegisterType<RealizarInscricaoOtelTelemetry>().As<IRealizarInscricaoTelemetry>().InstancePerLifetimeScope();
     }
 }

@@ -29,7 +29,7 @@ public class TelemetryMockFactory
         var tramontinaTelemetry = new Mock<ITelemetryService>();
         tramontinaTelemetry.Setup(x => x.AddTag(It.IsAny<string>(), It.IsAny<object?>()))
             .Returns(tramontinaTelemetry.Object);
-        tramontinaTelemetry.Setup(x => x.AddInformationEvent(It.IsAny<string>(), It.IsAny<object?>()))
+        tramontinaTelemetry.Setup(x => x.AddLogInformationAndEvent(It.IsAny<string>(), It.IsAny<object?>()))
             .Returns(tramontinaTelemetry.Object);
         tramontinaTelemetry.Setup(x => x.AddWarningEvent(It.IsAny<string>(), It.IsAny<object?>()))
             .Returns(tramontinaTelemetry.Object);

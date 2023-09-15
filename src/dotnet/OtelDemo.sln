@@ -10,6 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Domain", "Inscrico
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Inscricoes.IntegrationTests", "OtelDemo.Inscricoes.IntegrationTests\OtelDemo.Inscricoes.IntegrationTests.csproj", "{27AE8EE3-FC87-42BD-8294-89C5512C2095}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{98D6B3AD-DBCC-417F-9357-F9FE78492B0A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\build.yml = ..\..\.github\workflows\build.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -49,7 +49,7 @@ public sealed class InscricoesRepositorio : IService<InscricoesRepositorio>
         using var activity = _telemetryFactory.Create($"{nameof(InscricoesRepositorio)}.{nameof(Adicionar)}");
         activity.AddTag("inscricao", inscricao.Id.ToString());
         await _dbContext.Get().Inscricoes.AddAsync(inscricao, cancellationToken);
-        activity.AddInformationEvent("Inscricao adicionada no repositorio {inscricao}", new { inscricao = inscricao.Id.ToString() });
+        activity.AddLogInformationAndEvent("Inscricao adicionada no repositorio {inscricao}", new { inscricao = inscricao.Id.ToString() });
     }
 
     public async Task<Inscricao> Recuperar(Guid comandoInscricaoId)

@@ -34,7 +34,7 @@ public sealed class TelemetryService : ITelemetryService
         return this;
     }
 
-    public ITelemetryService AddInformationEvent(string messageTemplate, object? propertyValues)
+    public ITelemetryService AddLogInformationAndEvent(string messageTemplate, object? propertyValues)
     {
         _activity?.AddEvent(new ActivityEvent(Smart.Format(messageTemplate, propertyValues!)));
         // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
@@ -69,12 +69,6 @@ public sealed class TelemetryService : ITelemetryService
     public void SetSucess(string messageTemplate, object? propertyValues)
     {
         _activity?.SetStatus(ActivityStatusCode.Ok, Smart.Format(messageTemplate, propertyValues!));
-        // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-        _logger.Information(messageTemplate, propertyValues?
-            .GetType()
-            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-            .Select(p => p.GetValue(propertyValues))
-            .ToArray());
         _statusSet = true;
     }
     

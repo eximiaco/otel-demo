@@ -33,7 +33,7 @@ bld/
 [Ll]ogs/
 # Rider files
 .idea/
-
+.sonarqube/
 docker-compose/
 .lock
 

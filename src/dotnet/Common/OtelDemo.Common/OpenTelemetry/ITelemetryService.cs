@@ -4,7 +4,7 @@ public interface ITelemetryService : IDisposable
 {
     ITelemetryService AddTag(string tag, object? value);
     ITelemetryService AddInformationEvent(string message);
-    ITelemetryService AddInformationEvent(string messageTemplate, object? propertyValues);
+    ITelemetryService AddLogInformationAndEvent(string messageTemplate, object? propertyValues);
     ITelemetryService AddWarningEvent(string messageTemplate, object? propertyValues);
     ITelemetryService AddException(string error, Exception exception);
     void SetSucess(string messageTemplate, object? propertyValues);

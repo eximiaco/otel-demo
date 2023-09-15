@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -10,6 +11,7 @@ using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
 using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
+using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;
@@ -30,8 +32,13 @@ internal static class ServicesExtensions
             else
                 settings = new TelemetrySettings(serviceName, serviceVersion,
                     new TelemetryExporter("console", ""));
+            var metrics = new OtelMetrics();
+            
             serviceCollection.AddSingleton(settings);
             serviceCollection.AddScoped(sp => new OtelTracingService(sp.GetService<TelemetrySettings>()));
+            serviceCollection.AddSingleton(metrics);
+            serviceCollection.AddSingleton<OtelVariables>();
+            
             Action<ResourceBuilder> configureResource = r => r.AddService(
                 serviceName: settings.ServiceName,
                 serviceVersion: settings.ServiceVersion,
@@ -61,7 +68,7 @@ internal static class ServicesExtensions
                             builder.AddOtlpExporter(config =>
                             {
                                 config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
-                                //config.ExportProcessorType = ExportProcessorType.Simple;
+                                config.ExportProcessorType = ExportProcessorType.Simple;
                                 config.Protocol = OtlpExportProtocol.Grpc;
                             });
                             break;
@@ -78,9 +85,23 @@ internal static class ServicesExtensions
                 {
                     builder
                         .ConfigureResource(configureResource)
+                        .AddMeter(metrics.Name)
                         .AddRuntimeInstrumentation()
-                        .AddHttpClientInstrumentation()
                         .AddAspNetCoreInstrumentation();
+                    switch (settings.Exporter.Type.ToLower())
+                    {
+                        case "otlp" :
+                            builder.AddOtlpExporter(config =>
+                            {
+                                config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
+                                //config.ExportProcessorType = ExportProcessorType.Simple;
+                                //config.Protocol = OtlpExportProtocol.Grpc;
+                            });
+                            break;
+                        default:
+                            builder.AddConsoleExporter();
+                            break;
+                    }
                 });
             return serviceCollection;
         }
