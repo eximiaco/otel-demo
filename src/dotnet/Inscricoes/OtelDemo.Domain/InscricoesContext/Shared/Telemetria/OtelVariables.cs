@@ -2,9 +2,9 @@
 
 public class OtelVariables
 {
-    public string AlunoId => "Aluno";
-    public string ResponsavelId => "Responsavel";
-    public string TurmaId => "Turma";
-    public string QuantidadeVagas => "TurmaQuantidadeVagas";
-    public string InscricaoId => "Inscricao";
+    public string AlunoId => "inscricoes.aluno.id";
+    public string ResponsavelId => "inscricoes.responsavel.id";
+    public string TurmaId => "inscricoes.turma.id";
+    public string QuantidadeVagas => "inscricoes.turma.quantidadevagas";
+    public string InscricaoId => "inscricoes.inscricao.id";
 }
