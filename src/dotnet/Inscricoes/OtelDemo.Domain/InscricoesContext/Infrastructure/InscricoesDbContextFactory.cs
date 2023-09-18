@@ -21,7 +21,7 @@ public sealed class InscricoesDbContextFactory: IEfDbContextFactory<InscricoesDb
         var options = new DbContextOptionsBuilder<InscricoesDbContext>()
             .EnableDetailedErrors()
             //.EnableSensitiveDataLogging()                
-            .UseNpgsql(_configuration.GetConnectionString("inscricoes_db"), options => options.EnableRetryOnFailure())
+            .UseSqlServer(_configuration.GetConnectionString("inscricoes_db"), options => options.EnableRetryOnFailure())
             //.AddRelationalTypeMappingSourcePlugin<DataTypeMappingPlugin>()
             .Options;
         return new InscricoesDbContext(options, _serviceBus);

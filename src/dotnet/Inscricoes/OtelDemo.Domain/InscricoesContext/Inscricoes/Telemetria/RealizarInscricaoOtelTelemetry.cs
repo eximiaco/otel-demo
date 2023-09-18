@@ -1,4 +1,6 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using CSharpFunctionalExtensions;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
 using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
@@ -26,6 +28,26 @@ public sealed class RealizarInscricaoOtelTelemetry: IRealizarInscricaoTelemetry
         _telemetryService?.Dispose();
     }
 
+    private static readonly ActivitySource MyActivitySource = new ActivitySource(
+        "MyCompany.MyProduct.MyLibrary");
+    
+    
+    
+    public void HandleNewOrder()
+    {
+        var meter = new Meter("ecommerce.metrics.orders");
+        var orderCount = meter.CreateCounter<int>("ecommerce.metrics.orders.count", "order");
+        
+       #region Process new order
+       
+       #endregion
+        
+        orderCount.Add(1,
+            new KeyValuePair<string, object?>("status", "success"),
+            new KeyValuePair<string, object?>("type", "online"));
+    }
+    
+    
     public void NovaInscricaoRecebida(RealizarInscricaoComando comando)
     {
         _telemetryService
@@ -85,6 +107,6 @@ public sealed class RealizarInscricaoOtelTelemetry: IRealizarInscricaoTelemetry
         _telemetryService
             .AddTag(_otelVariables.InscricaoId, inscricao.Id)
             .SetSucess("Inscrição realizada", new {});
-        _otelMetrics.InscricaoRealizada(inscricao.Turma.Id);
+        _otelMetrics.InscricaoRealizada(inscricao.Turma);
     }
 }

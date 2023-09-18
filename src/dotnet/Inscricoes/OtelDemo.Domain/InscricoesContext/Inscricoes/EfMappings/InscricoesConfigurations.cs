@@ -7,16 +7,11 @@ public class InscricoesConfigurations: IEntityTypeConfiguration<Inscricao>
 {
     public void Configure(EntityTypeBuilder<Inscricao> builder)
     {
-        builder.ToTable("inscricoes");
+        builder.ToTable("Matriculas", "Inscricoes");
         builder.HasKey(p => p.Id);
         builder.Property(c => c.Aluno).IsRequired(true);
         builder.Property(c => c.Responsavel).IsRequired(true);
-        builder
-            .HasOne(c => c.Turma)
-            .WithMany()
-            .HasForeignKey("turma")
-            .HasPrincipalKey(c=> c.Id)
-            .IsRequired(true);
+        builder.Property(c => c.Turma).IsRequired();
         builder.Ignore(c => c.Ativa);
         //builder.Property<DateTime>("DataCadastro");
         //builder.Property<DateTime>("DataUltimaAlteracao");

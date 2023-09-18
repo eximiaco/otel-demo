@@ -4,19 +4,25 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>OtelDemo.Inscricoes</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="2.39.0" />
         <PackageReference Include="Dapper" Version="2.0.143" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Common\OtelDemo.Common\OtelDemo.Common.csproj" />
+
+
+
+
+
     </ItemGroup>
+
+
 
 
 </Project>

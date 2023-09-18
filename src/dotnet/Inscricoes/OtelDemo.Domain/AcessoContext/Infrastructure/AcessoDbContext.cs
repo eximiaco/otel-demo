@@ -1,26 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.EfMappings;
+using OtelDemo.Domain.AcessoContext.Permissoes;
+using OtelDemo.Domain.AcessoContext.Permissoes.EfMappings;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+namespace OtelDemo.Domain.AcessoContext.Infrastructure;
 
-public class InscricoesDbContext: DbContext
+public class AcessoDbContext: DbContext
 {
     private readonly IServiceBus _serviceBus;
-    public const string DEFAULT_SCHEMA = "inscricoes";
+    public const string DEFAULT_SCHEMA = "Acessos";
     
-    public InscricoesDbContext(DbContextOptions<InscricoesDbContext> options) : base(options) { }
+    public AcessoDbContext(DbContextOptions<AcessoDbContext> options) : base(options) { }
     
-    public InscricoesDbContext(DbContextOptions<InscricoesDbContext> options, IServiceBus serviceBus) : base(options)
+    public AcessoDbContext(DbContextOptions<AcessoDbContext> options, IServiceBus serviceBus) : base(options)
     {
         _serviceBus = serviceBus ?? throw new ArgumentNullException(nameof(serviceBus));
         
-        System.Diagnostics.Debug.WriteLine("InscricoesDbContext::ctor ->" + this.GetHashCode());
+        System.Diagnostics.Debug.WriteLine("AcessosDbContext::ctor ->" + this.GetHashCode());
     }
     
-    public DbSet<Inscricao> Inscricoes { get; set; }
-    public DbSet<Turma> Turmas { get; set; }
+    public DbSet<PermissaoAcesso> Permissoes { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -52,7 +51,6 @@ public class InscricoesDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new InscricoesConfigurations());
-        modelBuilder.ApplyConfiguration(new TurmasConfigurations());
+        modelBuilder.ApplyConfiguration(new PermissaoAcessoConfiguration());
     }
 }

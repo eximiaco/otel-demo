@@ -7,15 +7,14 @@ using OpenTelemetry.Trace;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
-using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
+using OtelDemo.Domain.AcessoContext.Permissoes.Aplicacao;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;
 using Serilog.Sinks.OpenTelemetry;
-using Silverback.Messaging.Configuration;
+using Silverback.Messaging.Broker.Behaviors;
 
-namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
+namespace OtelDemo.Acesso.BrokerConsumer;
 
 internal static class ServicesExtensions
     {
@@ -30,18 +29,12 @@ internal static class ServicesExtensions
             else
                 settings = new TelemetrySettings(serviceName, serviceVersion,
                     new TelemetryExporter("console", ""));
-            var metrics = new OtelMetrics();
-            
             serviceCollection.AddSingleton(settings);
             serviceCollection.AddScoped(sp => new OtelTracingService(sp.GetService<TelemetrySettings>()));
-            serviceCollection.AddSingleton(metrics);
-            serviceCollection.AddSingleton<OtelVariables>();
-            
             Action<ResourceBuilder> configureResource = r => r.AddService(
                 serviceName: settings.ServiceName,
                 serviceVersion: settings.ServiceVersion,
                 serviceInstanceId: Environment.MachineName);
-            
             serviceCollection
                 .AddOpenTelemetry()
                 .ConfigureResource(configureResource)
@@ -49,36 +42,29 @@ internal static class ServicesExtensions
                 {
                     builder
                         .AddSource(settings.ServiceName)
-                        .AddSource("Silverback.Integration.Produce")
-                        .AddHttpClientInstrumentation()
-                        .AddSqlClientInstrumentation(o =>
-                        {
-                            o.RecordException = true;
-                            o.SetDbStatementForText = true;
-                        })
-                        .AddEntityFrameworkCoreInstrumentation(o => { })
+                        .AddSource("Silverback.Integration.Consume")
+                        .AddHttpClientInstrumentation(o=> 
+                            o.FilterHttpWebRequest = request => 
+                                !request.Address.AbsoluteUri.Contains("logs-prod-015.grafana.net") || !request.Address.AbsoluteUri.Contains("events/raw"))
+                        .AddSqlClientInstrumentation()
+                        .AddEntityFrameworkCoreInstrumentation()
                         .AddAspNetCoreInstrumentation(opts =>
                         {
                             opts.EnrichWithHttpRequest = (a, r) => a?.AddTag("env", environmentName);
                             opts.RecordException = true;
-
                         })
                         .AddOtlpExporter(config =>
                         {
-                            config.Endpoint = new Uri(settings.Exporter.Endpoint);
+                            config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
                         });
                 })
                 .WithMetrics(builder =>
                 {
                     builder
                         .ConfigureResource(configureResource)
-                        .AddMeter(metrics.Name)
                         .AddRuntimeInstrumentation()
-                        .AddAspNetCoreInstrumentation()
-                        .AddOtlpExporter(config =>
-                        {
-                            config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
-                        });
+                        .AddHttpClientInstrumentation()
+                        .AddAspNetCoreInstrumentation();
                 });
             return serviceCollection;
         }
@@ -189,9 +175,9 @@ internal static class ServicesExtensions
                 .Enrich.WithThreadId()
                 .Enrich.WithOpenTelemetrySpanId()
                 .Enrich.WithOpenTelemetryTraceId()
-                .Enrich.WithProperty("service_name",serviceName )
                 //.Filter.ByExcluding(Matching.FromSource("Microsoft.AspNetCore.Hosting.Diagnostics"))
                 //.Filter.ByExcluding(Matching.FromSource("Microsoft.Hosting.Lifetime"))
+                .Enrich.WithProperty("service_name",serviceName )
                 .Filter.ByExcluding(
                     Matching.FromSource("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager")
                 )
@@ -199,7 +185,7 @@ internal static class ServicesExtensions
                 {
                     options.Endpoint = "http://localhost:4317";
                     options.IncludedData = IncludedData.MessageTemplateTextAttribute |
-                        IncludedData.TraceIdField | IncludedData.SpanIdField;
+                                           IncludedData.TraceIdField | IncludedData.SpanIdField ;
                 })
                 .CreateLogger();
             services.AddSingleton(Log.Logger);
@@ -221,13 +207,11 @@ internal static class ServicesExtensions
             services
                 .AddSilverback()
                 .WithConnectionToMessageBroker(config => config.AddKafka())
-                .AddKafkaEndpoints(endpoints => endpoints
-                    .Configure(config => config.Configure(kafkaConfig))
-                    .AddOutbound<InscricaoRealizadaEvento>(endpoint => endpoint
-                        .ProduceTo("inscricoes")
-                        .WithKafkaKey<InscricaoRealizadaEvento>(envelope => envelope.Message!.Id)
-                        .SerializeAsJson(serializer => serializer.UseFixedType<InscricaoRealizadaEvento>())
-                        .DisableMessageValidation()));
+                .AddEndpointsConfigurator<KafkaEndpointsConfigurator>()
+                .AddScopedSubscriber<DarPermissaoAcessoParaNovaInscricaoHandler>();
+            services
+                .AddScoped(typeof(IBrokerBehavior), typeof(CreateEfContextConsumerBehavior))
+                .AddScoped<SilverbackServiceBus>();
             return services;
         }
     }

@@ -1,26 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.EfMappings;
+using OtelDemo.Inscricoes.FinanceiroContext.Mensalidades;
+using OtelDemo.Inscricoes.FinanceiroContext.Mensalidades.EfMappings;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+namespace OtelDemo.Inscricoes.FinanceiroContext.Infrastructure;
 
-public class InscricoesDbContext: DbContext
+public class FinanceiroDbContext: DbContext
 {
     private readonly IServiceBus _serviceBus;
-    public const string DEFAULT_SCHEMA = "inscricoes";
+    public const string DEFAULT_SCHEMA = "Financeiro";
     
-    public InscricoesDbContext(DbContextOptions<InscricoesDbContext> options) : base(options) { }
+    public FinanceiroDbContext(DbContextOptions<FinanceiroDbContext> options) : base(options) { }
     
-    public InscricoesDbContext(DbContextOptions<InscricoesDbContext> options, IServiceBus serviceBus) : base(options)
+    public FinanceiroDbContext(DbContextOptions<FinanceiroDbContext> options, IServiceBus serviceBus) : base(options)
     {
         _serviceBus = serviceBus ?? throw new ArgumentNullException(nameof(serviceBus));
         
-        System.Diagnostics.Debug.WriteLine("InscricoesDbContext::ctor ->" + this.GetHashCode());
+        System.Diagnostics.Debug.WriteLine("FinanceiroDbContext::ctor ->" + this.GetHashCode());
     }
     
-    public DbSet<Inscricao> Inscricoes { get; set; }
-    public DbSet<Turma> Turmas { get; set; }
+    public DbSet<Mensalidade> Mensalidades { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -52,7 +51,6 @@ public class InscricoesDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new InscricoesConfigurations());
-        modelBuilder.ApplyConfiguration(new TurmasConfigurations());
+        modelBuilder.ApplyConfiguration(new MensalidadeConfiguration());
     }
 }

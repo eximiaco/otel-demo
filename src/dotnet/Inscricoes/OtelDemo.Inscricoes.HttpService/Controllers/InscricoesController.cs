@@ -36,20 +36,4 @@ public sealed class InscricoesController : ControllerBase
 
         return Ok();
     }
-    
-    [HttpPost]
-    public async Task<IActionResult> CancelarInscricao(
-        [FromServices]CancelarInscricaoHandler cancelarInscricaoHandler,
-        Guid inscricaoId, CancellationToken cancellationToken)
-    {
-        var comando = CancelarInscricaoComando.Criar(inscricaoId);
-        if (comando.IsFailure)
-            return BadRequest(comando.Error);
-
-        var resultado = await cancelarInscricaoHandler.Executar(comando.Value, cancellationToken);
-        if (resultado.IsFailure)
-            return BadRequest(resultado.Error);
-
-        return Ok();
-    }
 }

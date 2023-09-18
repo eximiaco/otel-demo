@@ -4,11 +4,11 @@ using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Telemetria;
+using OtelDemo.Inscricoes;
+using OtelDemo.Inscricoes.FinanceiroContext.Infrastructure;
 using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 
-namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
+namespace OtelDemo.Financeiro.BrokerConsumer;
 
 public class ApplicationModule: Autofac.Module
 {
@@ -20,13 +20,13 @@ public class ApplicationModule: Autofac.Module
             .InstancePerLifetimeScope();
 
         builder
-            .RegisterType<InscricoesDbContextFactory>()
-            .As<IEfDbContextFactory<InscricoesDbContext>>()
+            .RegisterType<FinanceiroDbContextFactory>()
+            .As<IEfDbContextFactory<FinanceiroDbContext>>()
             .InstancePerLifetimeScope();
 
         builder
-            .RegisterType<InscricoesDbContextAccessor>()
-            .As<IEfDbContextAccessor<InscricoesDbContext>>()
+            .RegisterType<FinanceiroDbContextAccessor>()
+            .As<IEfDbContextAccessor<FinanceiroDbContext>>()
             .InstancePerLifetimeScope();
         
         builder
@@ -41,9 +41,7 @@ public class ApplicationModule: Autofac.Module
         
         builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().InstancePerLifetimeScope();
         builder.RegisterType<TelemetryFactory>().As<ITelemetryFactory>().InstancePerLifetimeScope();
-        builder.RegisterType<RealizarInscricaoOtelTelemetry>().As<IRealizarInscricaoTelemetry>().InstancePerLifetimeScope();
         builder.RegisterType<OtelMetrics>().As<OtelMetrics>().SingleInstance();
         builder.RegisterType<OtelVariables>().As<OtelVariables>().SingleInstance();
-        
     }
 }

@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="EFCore\" />
       <Folder Include="Tenancy\" />
     </ItemGroup>
 

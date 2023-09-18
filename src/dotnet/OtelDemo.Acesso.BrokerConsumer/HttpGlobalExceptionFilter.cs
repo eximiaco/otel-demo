@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace OtelDemo.Inscricoes.BrokerConsumer;
+namespace OtelDemo.Financeiro.BrokerConsumer;
 
 public class HttpGlobalExceptionFilter : IExceptionFilter
 {

@@ -1,7 +1,8 @@
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using OtelDemo.Inscricoes.HttpService.Infrastructure;
+using OtelDemo.Acesso.BrokerConsumer;
+using OtelDemo.Financeiro.BrokerConsumer;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

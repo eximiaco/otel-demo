@@ -42,7 +42,7 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 
         _realizarInscricaoTelemetry.TurmaLocalizada(turma.Value);
         
-        var inscricao = Inscricao.CriarNova(comando.Aluno, comando.Responsavel, turma.Value);
+        var inscricao = Inscricao.CriarNova(comando.Aluno, comando.Responsavel, turma.Value.Id);
         if (inscricao.IsFailure)
             return _realizarInscricaoTelemetry.NaoFoiPossivelCriarInscricao(comando, inscricao.Error);
             

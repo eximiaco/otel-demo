@@ -5,13 +5,18 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <UserSecretsId>87522ea9-fb4a-4ded-b4f7-a37c0a54ed33</UserSecretsId>
+        <UserSecretsId>f22ad5eb-c0cb-48aa-a196-cb7a82cdc448</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\OtelDemo.Common\OtelDemo.Common.csproj" />
+      <ProjectReference Include="..\OtelDemo.Domain\OtelDemo.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,25 +34,22 @@
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
         <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
         <PackageReference Include="OpenTelemetry" Version="1.4.0" />
-        <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.4.0" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0" />
         <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0" />
         <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.4.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.14" />
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.14" />
         <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.0.0" />
-        <PackageReference Include="Silverback.Core" Version="4.3.0" />
-        <PackageReference Include="Silverback.Integration.Kafka.Testing" Version="4.3.0" />
+        <PackageReference Include="Silverback.Core" Version="4.3.2" />
+        <PackageReference Include="Silverback.Integration.Kafka" Version="4.3.2" />
+        <PackageReference Include="Silverback.Integration.Newtonsoft" Version="4.3.2" />
+        <PackageReference Include="Silverback.Integration.Kafka.Testing" Version="4.3.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
         <PackageReference Include="Microsoft.Identity.Web" Version="2.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Serilog.Enrichers.OpenTelemetry" Version="1.0.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Common\OtelDemo.Common\OtelDemo.Common.csproj" />
-      <ProjectReference Include="..\OtelDemo.Domain\OtelDemo.Domain.csproj" />
-    </ItemGroup>
-    
 </Project>

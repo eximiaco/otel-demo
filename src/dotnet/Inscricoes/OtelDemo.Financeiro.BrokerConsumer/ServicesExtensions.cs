@@ -1,8 +1,6 @@
-﻿using Confluent.Kafka;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
-using Npgsql;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -13,11 +11,11 @@ using OtelDemo.Common.ServiceBus.Silverback;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;
-using Silverback.Messaging.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
+using OtelDemo.Inscricoes.FinanceiroContext.Mensalidades.Aplicacao;
+using Serilog.Sinks.OpenTelemetry;
+using Silverback.Messaging.Broker.Behaviors;
 
-namespace OtelDemo.Inscricoes.BrokerConsumer;
+namespace OtelDemo.Financeiro.BrokerConsumer;
 
 internal static class ServicesExtensions
     {
@@ -49,32 +47,18 @@ internal static class ServicesExtensions
                         .AddHttpClientInstrumentation(o=> 
                             o.FilterHttpWebRequest = request => 
                                 !request.Address.AbsoluteUri.Contains("logs-prod-015.grafana.net") || !request.Address.AbsoluteUri.Contains("events/raw"))
-                        .AddNpgsql()
+                        .AddSqlClientInstrumentation()
+                        .AddEntityFrameworkCoreInstrumentation()
                         .AddAspNetCoreInstrumentation(opts =>
                         {
                             opts.EnrichWithHttpRequest = (a, r) => a?.AddTag("env", environmentName);
                             opts.RecordException = true;
-
+                        })
+                        .AddOtlpExporter(config =>
+                        {
+                            config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
+                            config.Protocol = OtlpExportProtocol.Grpc;
                         });
-                        
-                    switch (settings.Exporter.Type.ToLower())
-                    {
-                        case "otlp" :
-                            builder.AddOtlpExporter(config =>
-                            {
-                                config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
-                                //config.ExportProcessorType = ExportProcessorType.Simple;
-                                config.Protocol = OtlpExportProtocol.Grpc;
-                            });
-                            break;
-                        case "zipkin":
-                            builder.AddZipkinExporter(zipkinBuilder =>
-                                zipkinBuilder.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty));
-                            break;
-                        default:
-                            builder.AddConsoleExporter();
-                            break;
-                    }
                 })
                 .WithMetrics(builder =>
                 {
@@ -185,7 +169,7 @@ internal static class ServicesExtensions
             return services;
         }
         
-        public static IServiceCollection AddLogs(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddLogs(this IServiceCollection services, IConfiguration configuration, string serviceName)
         {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
@@ -195,9 +179,16 @@ internal static class ServicesExtensions
                 .Enrich.WithOpenTelemetryTraceId()
                 //.Filter.ByExcluding(Matching.FromSource("Microsoft.AspNetCore.Hosting.Diagnostics"))
                 //.Filter.ByExcluding(Matching.FromSource("Microsoft.Hosting.Lifetime"))
+                .Enrich.WithProperty("service_name",serviceName )
                 .Filter.ByExcluding(
                     Matching.FromSource("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager")
                 )
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.Endpoint = "http://localhost:4317";
+                    options.IncludedData = IncludedData.MessageTemplateTextAttribute |
+                                           IncludedData.TraceIdField | IncludedData.SpanIdField ;
+                })
                 .CreateLogger();
             services.AddSingleton(Log.Logger);
             return services;
@@ -218,20 +209,11 @@ internal static class ServicesExtensions
             services
                 .AddSilverback()
                 .WithConnectionToMessageBroker(config => config.AddKafka())
-                .AddKafkaEndpoints(endpoints => endpoints
-                    .Configure(config => config.Configure(kafkaConfig))
-                    .AddInbound(endpoint => endpoints.AddInbound(endpoint =>
-                        endpoint
-                            .ConsumeFrom("inscricoes")
-                            .Configure(config =>
-                            {
-                                config.GroupId = kafkaConfig.Connection.GroupId;
-                                config.AutoOffsetReset = AutoOffsetReset.Latest;
-                            })
-                            .DisableMessageValidation()
-                            .DeserializeJson(serializer => serializer.UseFixedType<InscricaoRealizadaEvento>()))))
-                .AddScopedSubscriber<InscricaoRealizadaEvento>();
-            services.AddScoped<SilverbackServiceBus>();
+                .AddEndpointsConfigurator<KafkaEndpointsConfigurator>()
+                .AddScopedSubscriber<GerarMensalidadesParaNovaInscricaoHandler>();
+            services
+                .AddScoped(typeof(IBrokerBehavior), typeof(CreateEfContextConsumerBehavior))
+                .AddScoped<SilverbackServiceBus>();
             return services;
         }
     }

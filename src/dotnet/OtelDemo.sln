@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Inscricoes.HttpSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Common", "Common\OtelDemo.Common\OtelDemo.Common.csproj", "{5E8F4B71-8933-4059-BEC9-CADA41A8782A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Inscricoes.BrokerConsumer", "Inscricoes\OtelDemo.Inscricoes.BrokerConsumer\OtelDemo.Inscricoes.BrokerConsumer.csproj", "{0BA41433-029D-47B6-8EC1-C34BC961E555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Financeiro.BrokerConsumer", "Inscricoes\OtelDemo.Financeiro.BrokerConsumer\OtelDemo.Financeiro.BrokerConsumer.csproj", "{0BA41433-029D-47B6-8EC1-C34BC961E555}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Domain", "Inscricoes\OtelDemo.Domain\OtelDemo.Domain.csproj", "{95395A4F-2D0A-4569-93F5-B908953A01F9}"
 EndProject
@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{98D6
 	ProjectSection(SolutionItems) = preProject
 		..\..\.github\workflows\build.yml = ..\..\.github\workflows\build.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Acesso.BrokerConsumer", "OtelDemo.Acesso.BrokerConsumer\OtelDemo.Acesso.BrokerConsumer.csproj", "{5199CEC5-5E4C-451C-AEE6-63E12E3EFF25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{27AE8EE3-FC87-42BD-8294-89C5512C2095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27AE8EE3-FC87-42BD-8294-89C5512C2095}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27AE8EE3-FC87-42BD-8294-89C5512C2095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5199CEC5-5E4C-451C-AEE6-63E12E3EFF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5199CEC5-5E4C-451C-AEE6-63E12E3EFF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5199CEC5-5E4C-451C-AEE6-63E12E3EFF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5199CEC5-5E4C-451C-AEE6-63E12E3EFF25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

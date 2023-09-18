@@ -1,7 +1,7 @@
 ﻿using OtelDemo.Common.UoW;
 using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 
-namespace OtelDemo.Inscricoes.BrokerConsumer;
+namespace OtelDemo.Financeiro.BrokerConsumer;
 
 public class TenantMiddleware : IMiddleware
 {
