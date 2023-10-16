@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
+﻿using Microsoft.AspNetCore.Mvc;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
+using OtelDemo.Domain.InscricoesContext.QueryModel;
 
 namespace OtelDemo.Inscricoes.HttpService.Controllers;
 
@@ -36,4 +36,19 @@ public sealed class InscricoesController : ControllerBase
 
         return Ok();
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> ConsultarInscricao(
+        [FromServices] InscricoesQuery inscricoesQuery,
+        string id, 
+        CancellationToken cancellationToken)
+    {
+        if(!Guid.TryParse(id, out Guid guidId))
+            return NotFound();
+        var inscricao = await inscricoesQuery.Get(guidId, cancellationToken);
+        if (inscricao == null)
+            return NotFound();
+        return Ok(inscricao);
+    }
+    
 }

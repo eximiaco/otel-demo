@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.UoW;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+namespace OtelDemo.Domain.InscricoesContext.Infrastructure;
 
 public sealed class InscricoesDbContextFactory: IEfDbContextFactory<InscricoesDbContext>
 {

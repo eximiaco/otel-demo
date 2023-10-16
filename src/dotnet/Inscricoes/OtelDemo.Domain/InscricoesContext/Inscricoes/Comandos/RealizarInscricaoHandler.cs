@@ -1,10 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using OtelDemo.Common;
-using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Telemetria;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Telemetria;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 
 public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 {

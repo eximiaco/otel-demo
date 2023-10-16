@@ -1,5 +1,5 @@
 ﻿using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+using OtelDemo.Domain.InscricoesContext.Infrastructure;
 
 namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.EfMappings;
+using OtelDemo.Domain.InscricoesContext.Inscricoes;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.EfMappings;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+namespace OtelDemo.Domain.InscricoesContext.Infrastructure;
 
 public class InscricoesDbContext: DbContext
 {

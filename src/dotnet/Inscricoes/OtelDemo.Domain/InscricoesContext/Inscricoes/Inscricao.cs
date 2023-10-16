@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Eventos;
 using Entity = OtelDemo.Common.Entity;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes;
 
 public sealed class Inscricao : Entity
 {

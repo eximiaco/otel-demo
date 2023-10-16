@@ -2,10 +2,10 @@
 using System.Diagnostics.Metrics;
 using CSharpFunctionalExtensions;
 using OtelDemo.Common.OpenTelemetry;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Telemetria;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Telemetria;
 
 public sealed class RealizarInscricaoOtelTelemetry: IRealizarInscricaoTelemetry
 {

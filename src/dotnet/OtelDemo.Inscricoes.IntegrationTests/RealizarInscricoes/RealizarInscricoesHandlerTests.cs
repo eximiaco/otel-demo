@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using OtelDemo.Common.ServiceBus;
-using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
 using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
 using OtelDemo.Inscricoes.IntegrationTests.TestInfrastructure.PostgresIntegrationUtilities;
 using Shouldly;
 

@@ -15,7 +15,7 @@ using Serilog.Filters;
 using Serilog.Sinks.OpenTelemetry;
 using Silverback.Messaging.Configuration;
 
-namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
+namespace OtelDemo.Financeiro.HttpService.Infrastructure;
 
 internal static class ServicesExtensions
     {

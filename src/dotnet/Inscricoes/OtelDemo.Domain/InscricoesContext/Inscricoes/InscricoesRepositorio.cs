@@ -1,14 +1,13 @@
-﻿using System.Data.SqlClient;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+using OtelDemo.Domain.InscricoesContext.Infrastructure;
 using Serilog;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes;
 
 public sealed class InscricoesRepositorio : IService<InscricoesRepositorio>
 {

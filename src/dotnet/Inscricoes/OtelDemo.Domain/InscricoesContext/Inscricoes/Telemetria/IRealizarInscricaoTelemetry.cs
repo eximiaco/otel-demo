@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Telemetria;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Telemetria;
 
 public interface IRealizarInscricaoTelemetry : IDisposable
 {
