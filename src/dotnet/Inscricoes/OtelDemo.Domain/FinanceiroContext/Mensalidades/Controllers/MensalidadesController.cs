@@ -2,7 +2,7 @@
 using OtelDemo.Domain.FinanceiroContext.Mensalidades.Aplicacao;
 using OtelDemo.Domain.FinanceiroContext.Mensalidades.Comandos;
 
-namespace OtelDemo.Financeiro.HttpService.Controllers;
+namespace OtelDemo.Domain.FinanceiroContext.Mensalidades.Controllers;
 
 [ApiController]
 //[Authorize()]

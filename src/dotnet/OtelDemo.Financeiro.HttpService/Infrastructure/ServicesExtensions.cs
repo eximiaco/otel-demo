@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
@@ -8,6 +9,7 @@ using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
 using OtelDemo.Domain.InscricoesContext.Inscricoes.Eventos;
+using OtelDemo.Inscricoes;
 using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
@@ -228,6 +230,18 @@ internal static class ServicesExtensions
                         .WithKafkaKey<InscricaoRealizadaEvento>(envelope => envelope.Message!.Id)
                         .SerializeAsJson(serializer => serializer.UseFixedType<InscricaoRealizadaEvento>())
                         .DisableMessageValidation()));
+            return services;
+        }
+        
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            var assembly = Assembly.Load(typeof(Ambiente).Assembly.ToString());
+            services
+                .AddControllers(o =>
+                {
+                    o.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                .AddApplicationPart(assembly);
             return services;
         }
     }

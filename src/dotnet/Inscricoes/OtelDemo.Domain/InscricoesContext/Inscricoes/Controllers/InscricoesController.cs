@@ -2,7 +2,7 @@
 using OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 using OtelDemo.Domain.InscricoesContext.QueryModel;
 
-namespace OtelDemo.Inscricoes.HttpService.Controllers;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Controllers;
 
 [ApiController]
 //[Authorize()]

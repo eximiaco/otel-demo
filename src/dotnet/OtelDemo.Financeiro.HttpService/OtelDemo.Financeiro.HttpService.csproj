@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CSharpFunctionalExtensions" Version="2.39.0" />
+        <PackageReference Include="CSharpFunctionalExtensions" Version="2.40.3" />
         <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.7" />
         <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.5.1-beta.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
@@ -51,6 +51,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Inscricoes\OtelDemo.Domain\OtelDemo.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers\" />
     </ItemGroup>
 
 </Project>

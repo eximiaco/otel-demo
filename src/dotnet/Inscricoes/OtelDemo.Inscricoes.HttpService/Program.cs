@@ -26,10 +26,7 @@ try
         .AddCaching()
         .AddMessageBroker(builder.Configuration)
         .AddTransient<TenantMiddleware>()
-        .AddControllers(o =>
-        {
-            o.Filters.Add(typeof(HttpGlobalExceptionFilter));
-        });
+        .AddCustomMvc();
 
     builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     {

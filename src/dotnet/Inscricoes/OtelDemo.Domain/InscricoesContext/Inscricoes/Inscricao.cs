@@ -33,6 +33,7 @@ public sealed class Inscricao : Entity
         if (!Ativa)
             return Result.Failure("Inscricao ja cancelada");
         Ativa = false;
+        
         this.AddDomainEvent(new InscricaoCanceladaEvento(Id));
         return Result.Success();
     }
