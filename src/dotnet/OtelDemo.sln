@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Acesso.BrokerConsu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Financeiro.HttpService", "OtelDemo.Financeiro.HttpService\OtelDemo.Financeiro.HttpService.csproj", "{FADCCBC8-FB8C-4F80-A214-476526505A36}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploys", "Deploys", "{E8EEC6E9-D55B-4897-8499-909A2347907C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,5 +57,9 @@ Global
 		{FADCCBC8-FB8C-4F80-A214-476526505A36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{5199CEC5-5E4C-451C-AEE6-63E12E3EFF25} = {E8EEC6E9-D55B-4897-8499-909A2347907C}
+		{0BA41433-029D-47B6-8EC1-C34BC961E555} = {E8EEC6E9-D55B-4897-8499-909A2347907C}
+		{FADCCBC8-FB8C-4F80-A214-476526505A36} = {E8EEC6E9-D55B-4897-8499-909A2347907C}
+		{26C6558A-FD72-4383-9364-E2EAEF6590F7} = {E8EEC6E9-D55B-4897-8499-909A2347907C}
 	EndGlobalSection
 EndGlobal
