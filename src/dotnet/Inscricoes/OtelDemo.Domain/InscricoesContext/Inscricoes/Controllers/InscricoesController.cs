@@ -12,16 +12,18 @@ public sealed class InscricoesController : ControllerBase
 {
     private readonly RealizarInscricaoHandler _realizarInscricaoHandler;
 
-    public InscricoesController(RealizarInscricaoHandler realizarInscricaoHandler)
+    public InscricoesController()
     {
-        _realizarInscricaoHandler = realizarInscricaoHandler;
+        
     }
     
     public record NovaInscricaoModel(string CpfAluno, string CpfResponsavel, int CodigoTurma);
     
     [HttpPost]
     public async Task<IActionResult> RealizarInscricao(
-        [FromBody]NovaInscricaoModel input, CancellationToken cancellationToken)
+        [FromServices]RealizarInscricaoHandler realizarInscricaoHandler,
+        [FromBody]NovaInscricaoModel input, 
+        CancellationToken cancellationToken)
     {
         var comando = RealizarInscricaoComando.Criar(
             input.CpfAluno, 
