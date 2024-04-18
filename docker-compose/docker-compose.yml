@@ -4,7 +4,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.0
     hostname: zookeeper
-    container_name: zookeeper
+    container_name: oteldemo_zookeeper
     ports:
       - "2181:2181"
     environment:
@@ -17,7 +17,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.0.0
     hostname: kafka
-    container_name: kafka
+    container_name: oteldemo_kafka
     depends_on:
       - zookeeper
     ports:
@@ -37,7 +37,7 @@ services:
   
   seq:
     image: datalust/seq
-    container_name: seq
+    container_name: oteldemo_seq
     ports:
       - 80:80
       - 5341:5341
@@ -45,3 +45,10 @@ services:
       - ./seq/data:/data
     environment:
       ACCEPT_EULA: "Y"
+  
+  mssql:
+    image: oteldemo/mssql_db
+    container_name: oteldemo_sql
+    ports:
+      - 1433:1433
+    
