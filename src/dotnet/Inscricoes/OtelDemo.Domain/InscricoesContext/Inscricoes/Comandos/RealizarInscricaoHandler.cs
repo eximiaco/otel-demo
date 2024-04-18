@@ -1,10 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using OtelDemo.Common;
-using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Telemetria;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Telemetria;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 
 public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 {
@@ -42,7 +41,7 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
 
         _realizarInscricaoTelemetry.TurmaLocalizada(turma.Value);
         
-        var inscricao = Inscricao.CriarNova(comando.Aluno, comando.Responsavel, turma.Value);
+        var inscricao = Inscricao.CriarNova(comando.Aluno, comando.Responsavel, turma.Value.Id);
         if (inscricao.IsFailure)
             return _realizarInscricaoTelemetry.NaoFoiPossivelCriarInscricao(comando, inscricao.Error);
             

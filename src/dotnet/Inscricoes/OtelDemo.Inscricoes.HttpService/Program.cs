@@ -13,7 +13,7 @@ try
 {
     Log.ForContext("ApplicationName", serviceName).Information("Starting application");
     builder.Services
-        .AddLogs(builder.Configuration)
+        .AddLogs(builder.Configuration, serviceName!)
         .AddTelemetry(serviceName!, serviceVersion!, builder.Configuration)
         .AddEndpointsApiExplorer()
         .AddSwaggerDoc()
@@ -26,10 +26,7 @@ try
         .AddCaching()
         .AddMessageBroker(builder.Configuration)
         .AddTransient<TenantMiddleware>()
-        .AddControllers(o =>
-        {
-            o.Filters.Add(typeof(HttpGlobalExceptionFilter));
-        });
+        .AddCustomMvc();
 
     builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     {

@@ -4,7 +4,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.0
     hostname: zookeeper
-    container_name: zookeeper
+    container_name: oteldemo_zookeeper
     ports:
       - "2181:2181"
     environment:
@@ -17,7 +17,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.0.0
     hostname: kafka
-    container_name: kafka
+    container_name: oteldemo_kafka
     depends_on:
       - zookeeper
     ports:
@@ -37,7 +37,7 @@ services:
   
   seq:
     image: datalust/seq
-    container_name: seq
+    container_name: oteldemo_seq
     ports:
       - 80:80
       - 5341:5341
@@ -45,33 +45,10 @@ services:
       - ./seq/data:/data
     environment:
       ACCEPT_EULA: "Y"
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
-    environment:
-      - STORAGE_TYPE=mem
-      # Uncomment to disable scribe
-      # - SCRIBE_ENABLED=false
-      # Uncomment to enable self-tracing
-      # - SELF_TRACING_ENABLED=true
-      # Uncomment to enable debug logging
-      # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG
+  
+  mssql:
+    image: oteldemo/mssql_db
+    container_name: oteldemo_sql
     ports:
-      # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411
-      
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
-    volumes:
-      - ./postgres/data:/var/lib/posgresql/data
-    ports:
-      - "5432:5432"
-#    networks:
-#      - postgres
-    restart: unless-stopped
+      - 1433:1433
+    

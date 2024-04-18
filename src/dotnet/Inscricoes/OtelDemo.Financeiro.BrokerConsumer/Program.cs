@@ -1,7 +1,7 @@
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using OtelDemo.Inscricoes.BrokerConsumer;
+using OtelDemo.Financeiro.BrokerConsumer;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,7 @@ try
 {
     Log.ForContext("ApplicationName", serviceName).Information("Starting application");
     builder.Services
-        .AddLogs(builder.Configuration)
+        .AddLogs(builder.Configuration, serviceName!)
         .AddTelemetry(serviceName!, serviceVersion!, builder.Configuration)
         .AddEndpointsApiExplorer()
         .AddSwaggerDoc()

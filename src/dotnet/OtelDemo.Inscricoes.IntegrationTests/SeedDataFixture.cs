@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using OtelDemo.Domain.InscricoesContext.Inscricoes;
 using OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
 using OtelDemo.Inscricoes.IntegrationTests.TestInfrastructure.PostgresIntegrationUtilities;
 using Shouldly;

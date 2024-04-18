@@ -1,39 +1,46 @@
-﻿using System.Data.SqlClient;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using OtelDemo.Common;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.UoW;
-using OtelDemo.Inscricoes.InscricoesContext.Infrastructure;
+using OtelDemo.Domain.InscricoesContext.Infrastructure;
+using Serilog;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes;
 
 public sealed class InscricoesRepositorio : IService<InscricoesRepositorio>
 {
     private readonly ITelemetryFactory _telemetryFactory;
     private readonly IEfDbContextAccessor<InscricoesDbContext> _dbContext;
+    private readonly ILogger _logger;
 
     public InscricoesRepositorio(
         ITelemetryFactory telemetryFactory,
-        IEfDbContextAccessor<InscricoesDbContext> dbContext)
+        IEfDbContextAccessor<InscricoesDbContext> dbContext,
+        ILogger logger)
     {
         _telemetryFactory = telemetryFactory;
         _dbContext = dbContext;
+        _logger = logger;
     }
 
     public async Task<bool> AlunoExiste(string aluno)
     {
         var result = await _dbContext.Get().Database.GetDbConnection()
-            .QueryFirstOrDefaultAsync<string>("SELECT codigo FROM public.alunos WHERE codigo = @aluno",
+            .QueryFirstOrDefaultAsync<string>("SELECT codigo FROM Inscricoes.Alunos WHERE codigo = @aluno",
             new {aluno});
+        
+        if(result != aluno)
+            _logger.Warning("Aluno não foi localizado no banco de dados");
+        
         return result == aluno;
     }
     
     public async Task<bool> ResponsavelExiste(string responsavel)
     {
         var result = await _dbContext.Get().Database.GetDbConnection()
-            .QueryFirstOrDefaultAsync<string>("SELECT codigo FROM public.responsaveis WHERE codigo = @responsavel",
+            .QueryFirstOrDefaultAsync<string>("SELECT codigo FROM Inscricoes.Responsaveis WHERE codigo = @responsavel",
                 new {responsavel});
         return result == responsavel;
     }

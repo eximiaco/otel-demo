@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using OtelDemo.Common.UoW;
 
-namespace OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Comandos;
+namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 
 public class CancelarInscricaoHandler
 {
@@ -19,7 +19,9 @@ public class CancelarInscricaoHandler
     public async Task<Result> Executar(CancelarInscricaoComando comando, CancellationToken cancellationToken)
     {
         var inscricao = await _repositorio.Recuperar(comando.InscricaoId);
-        inscricao.Cancelar();
+        var result = inscricao.Cancelar();
+        if (result.IsFailure)
+            return Result.Failure("iosdfhlsdjflsjfkl");
         await  _unitOfWork.Commit(cancellationToken);
         return Result.Success();
     }

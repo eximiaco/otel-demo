@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
-using Npgsql;
-using OpenTelemetry;
-using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OtelDemo.Common.OpenTelemetry;
 using OtelDemo.Common.ServiceBus;
 using OtelDemo.Common.ServiceBus.Silverback;
-using OtelDemo.Inscricoes.InscricoesContext.Inscricoes.Eventos;
+using OtelDemo.Domain.InscricoesContext.Inscricoes.Eventos;
 using OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 using Serilog;
 using Serilog.Enrichers.OpenTelemetry;
 using Serilog.Filters;
+using Serilog.Sinks.OpenTelemetry;
 using Silverback.Messaging.Configuration;
 
 namespace OtelDemo.Inscricoes.HttpService.Infrastructure;
@@ -43,6 +42,7 @@ internal static class ServicesExtensions
                 serviceName: settings.ServiceName,
                 serviceVersion: settings.ServiceVersion,
                 serviceInstanceId: Environment.MachineName);
+            
             serviceCollection
                 .AddOpenTelemetry()
                 .ConfigureResource(configureResource)
@@ -51,35 +51,23 @@ internal static class ServicesExtensions
                     builder
                         .AddSource(settings.ServiceName)
                         .AddSource("Silverback.Integration.Produce")
-                        .AddHttpClientInstrumentation(o=> 
-                            o.FilterHttpWebRequest = request => 
-                                !request.Address.AbsoluteUri.Contains("logs-prod-015.grafana.net") || !request.Address.AbsoluteUri.Contains("events/raw"))
-                        .AddNpgsql()
+                        .AddHttpClientInstrumentation()
+                        .AddSqlClientInstrumentation(o =>
+                        {
+                            o.RecordException = true;
+                            o.SetDbStatementForText = true;
+                        })
+                        .AddEntityFrameworkCoreInstrumentation(o => { })
                         .AddAspNetCoreInstrumentation(opts =>
                         {
                             opts.EnrichWithHttpRequest = (a, r) => a?.AddTag("env", environmentName);
                             opts.RecordException = true;
 
+                        })
+                        .AddOtlpExporter(config =>
+                        {
+                            config.Endpoint = new Uri(settings.Exporter.Endpoint);
                         });
-                        
-                    switch (settings.Exporter.Type.ToLower())
-                    {
-                        case "otlp" :
-                            builder.AddOtlpExporter(config =>
-                            {
-                                config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
-                                config.ExportProcessorType = ExportProcessorType.Simple;
-                                config.Protocol = OtlpExportProtocol.Grpc;
-                            });
-                            break;
-                        case "zipkin":
-                            builder.AddZipkinExporter(zipkinBuilder =>
-                                zipkinBuilder.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty));
-                            break;
-                        default:
-                            builder.AddConsoleExporter();
-                            break;
-                    }
                 })
                 .WithMetrics(builder =>
                 {
@@ -87,21 +75,11 @@ internal static class ServicesExtensions
                         .ConfigureResource(configureResource)
                         .AddMeter(metrics.Name)
                         .AddRuntimeInstrumentation()
-                        .AddAspNetCoreInstrumentation();
-                    switch (settings.Exporter.Type.ToLower())
-                    {
-                        case "otlp" :
-                            builder.AddOtlpExporter(config =>
-                            {
-                                config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
-                                //config.ExportProcessorType = ExportProcessorType.Simple;
-                                //config.Protocol = OtlpExportProtocol.Grpc;
-                            });
-                            break;
-                        default:
-                            builder.AddConsoleExporter();
-                            break;
-                    }
+                        .AddAspNetCoreInstrumentation()
+                        .AddOtlpExporter(config =>
+                        {
+                            config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
+                        });
                 });
             return serviceCollection;
         }
@@ -204,7 +182,7 @@ internal static class ServicesExtensions
             return services;
         }
         
-        public static IServiceCollection AddLogs(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddLogs(this IServiceCollection services, IConfiguration configuration, string serviceName)
         {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
@@ -212,11 +190,18 @@ internal static class ServicesExtensions
                 .Enrich.WithThreadId()
                 .Enrich.WithOpenTelemetrySpanId()
                 .Enrich.WithOpenTelemetryTraceId()
+                .Enrich.WithProperty("service_name",serviceName )
                 //.Filter.ByExcluding(Matching.FromSource("Microsoft.AspNetCore.Hosting.Diagnostics"))
                 //.Filter.ByExcluding(Matching.FromSource("Microsoft.Hosting.Lifetime"))
                 .Filter.ByExcluding(
                     Matching.FromSource("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager")
                 )
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.Endpoint = "http://localhost:4317";
+                    options.IncludedData = IncludedData.MessageTemplateTextAttribute |
+                        IncludedData.TraceIdField | IncludedData.SpanIdField;
+                })
                 .CreateLogger();
             services.AddSingleton(Log.Logger);
             return services;
@@ -244,6 +229,18 @@ internal static class ServicesExtensions
                         .WithKafkaKey<InscricaoRealizadaEvento>(envelope => envelope.Message!.Id)
                         .SerializeAsJson(serializer => serializer.UseFixedType<InscricaoRealizadaEvento>())
                         .DisableMessageValidation()));
+            return services;
+        }
+        
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            var assembly = Assembly.Load(typeof(Ambiente).Assembly.ToString());
+            services
+                .AddControllers(o =>
+                {
+                    o.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                .AddApplicationPart(assembly);
             return services;
         }
     }

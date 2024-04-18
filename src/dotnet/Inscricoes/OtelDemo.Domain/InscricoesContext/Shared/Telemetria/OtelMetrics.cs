@@ -4,11 +4,11 @@ namespace OtelDemo.Inscricoes.InscricoesContext.Shared.Telemetria;
 
 public class OtelMetrics
 {
-    public OtelMetrics(string name = "InscricoesContext")
+    public OtelMetrics(string name = "inscricoes.metrics")
     {
         Name = name;
         var meter = new Meter(Name);
-        InscricoesCount = meter.CreateCounter<int>("inscricoes-contador", "inscricao");
+        InscricoesCount = meter.CreateCounter<int>("inscricoes.metrics.total", "inscricao");
     }
 
     public string Name { get; }
