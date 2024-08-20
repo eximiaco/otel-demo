@@ -24,6 +24,7 @@ public class KafkaEndpointsConfigurator: IEndpointsConfigurator
                     endpoints
                         .AddInbound(builderEndpoint =>
                             builderEndpoint
+                                .WithName("inscricoes-consumer")
                                 .ConsumeFrom("inscricoes")
                                 .Configure(config =>
                                 {

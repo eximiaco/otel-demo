@@ -12,9 +12,9 @@ public sealed class InscricoesController : ControllerBase
 {
     private readonly RealizarInscricaoHandler _realizarInscricaoHandler;
 
-    public InscricoesController()
+    public InscricoesController(RealizarInscricaoHandler realizarInscricaoHandler)
     {
-        
+        _realizarInscricaoHandler = realizarInscricaoHandler;
     }
     
     public record NovaInscricaoModel(string CpfAluno, string CpfResponsavel, int CodigoTurma);

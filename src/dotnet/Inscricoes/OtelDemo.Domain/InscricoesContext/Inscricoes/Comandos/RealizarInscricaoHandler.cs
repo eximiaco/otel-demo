@@ -2,6 +2,7 @@
 using OtelDemo.Common;
 using OtelDemo.Common.UoW;
 using OtelDemo.Domain.InscricoesContext.Inscricoes.Telemetria;
+using Serilog;
 
 namespace OtelDemo.Domain.InscricoesContext.Inscricoes.Comandos;
 
@@ -10,21 +11,27 @@ public class RealizarInscricaoHandler : IService<RealizarInscricaoHandler>
     private readonly IRealizarInscricaoTelemetry _realizarInscricaoTelemetry;
     private readonly InscricoesRepositorio _inscricoesRepositorio;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger _logger;
 
     public RealizarInscricaoHandler(
         IRealizarInscricaoTelemetry realizarInscricaoTelemetry,
         InscricoesRepositorio inscricoesRepositorio,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        Serilog.ILogger logger)
     {
         _realizarInscricaoTelemetry = realizarInscricaoTelemetry;
         _inscricoesRepositorio = inscricoesRepositorio;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
     
     public async Task<Result> Executar(RealizarInscricaoComando comando, CancellationToken cancellationToken)
     {
         _realizarInscricaoTelemetry.NovaInscricaoRecebida(comando);
         
+        _logger.Information("Recebeu o comando {responsavel}", comando.Responsavel);
+
+
         if (!await _inscricoesRepositorio.AlunoExiste(comando.Aluno))
             return _realizarInscricaoTelemetry.AlunoNaoLocalizado(comando);
         

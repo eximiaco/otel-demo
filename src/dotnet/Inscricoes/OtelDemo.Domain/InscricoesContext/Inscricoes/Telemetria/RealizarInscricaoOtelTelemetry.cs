@@ -54,7 +54,6 @@ public sealed class RealizarInscricaoOtelTelemetry: IRealizarInscricaoTelemetry
             .AddTag(_otelVariables.AlunoId, comando.Aluno)
             .AddTag(_otelVariables.ResponsavelId, comando.Responsavel)
             .AddTag(_otelVariables.TurmaId, comando.Turma);
-        _otelMetrics.NovaInscricaoRequisitada(comando.Turma);
     }
 
     public Result AlunoNaoLocalizado(RealizarInscricaoComando comando)

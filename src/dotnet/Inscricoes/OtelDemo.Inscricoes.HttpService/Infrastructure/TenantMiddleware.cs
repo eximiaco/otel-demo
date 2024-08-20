@@ -10,26 +10,19 @@ public class TenantMiddleware : IMiddleware
 
     public TenantMiddleware(
         IEfDbContextFactory<InscricoesDbContext> factory,
-         IEfDbContextAccessor<InscricoesDbContext> accessor)
+        IEfDbContextAccessor<InscricoesDbContext> accessor)
     {
         _factory = factory;
         _accessor = accessor;
     }
 
-    // public async Task InvokeAsync(HttpContext context)
-    // {
-    //     
-    // }
-
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        using (var contexto = await _factory.CriarAsync(context.Request.Headers["x-tenant"]))
-        {
-            _accessor.Register(contexto);
-            // Call the next delegate/middleware in the pipeline.
-            await next(context);
-            _accessor.Clear();    
-        }
+        await using var contexto = await _factory.CriarAsync(context.Request.Headers["x-tenant"]);
+        _accessor.Register(contexto);
+        // Call the next delegate/middleware in the pipeline.
+        await next(context);
+        _accessor.Clear();
     }
 }
 

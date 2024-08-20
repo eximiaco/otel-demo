@@ -8,30 +8,24 @@ public class OtelMetrics
     {
         Name = name;
         var meter = new Meter(Name);
-        InscricoesCount = meter.CreateCounter<int>("inscricoes.metrics.total", "inscricao");
+        InscricoesCount = meter.CreateUpDownCounter<int>("inscricoes.metrics.total", "inscricao");
+        InscricoesErroCount = meter.CreateUpDownCounter<int>("inscricoes.metrics.error", "inscricao");
     }
 
     public string Name { get; }
-    private Counter<int> InscricoesCount { get; }
     
-    public void NovaInscricaoRequisitada(int turma)
-    {
-        InscricoesCount.Add(1,
-            new KeyValuePair<string, object?>("status", "requisitado"),
-            new KeyValuePair<string, object?>("turma", turma));
-    }
-
+    private UpDownCounter<int> InscricoesCount { get; }
+    private UpDownCounter<int> InscricoesErroCount { get; }
+    
     public void InscricaoNaoRealizada(int turma)
     {
-        InscricoesCount.Add(1,
-            new KeyValuePair<string, object?>("status", "erro"),
+        InscricoesErroCount.Add(1,
             new KeyValuePair<string, object?>("turma", turma));
     }
 
     public void InscricaoRealizada(int turmaId)
     {
         InscricoesCount.Add(1,
-            new KeyValuePair<string, object?>("status", "sucesso"),
             new KeyValuePair<string, object?>("turma", turmaId));
     }
 }

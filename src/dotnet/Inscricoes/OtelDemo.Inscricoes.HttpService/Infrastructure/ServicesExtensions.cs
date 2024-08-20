@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -66,7 +67,9 @@ internal static class ServicesExtensions
                         })
                         .AddOtlpExporter(config =>
                         {
-                            config.Endpoint = new Uri(settings.Exporter.Endpoint);
+                            //config.Endpoint = new Uri(settings.Exporter.Endpoint);
+                            config.Endpoint = new Uri("http://3.82.16.160:4317");
+                            config.Protocol = OtlpExportProtocol.Grpc;
                         });
                 })
                 .WithMetrics(builder =>
@@ -78,7 +81,9 @@ internal static class ServicesExtensions
                         .AddAspNetCoreInstrumentation()
                         .AddOtlpExporter(config =>
                         {
-                            config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
+                            //config.Endpoint = new Uri(settings.Exporter.Endpoint ?? string.Empty);
+                            config.Endpoint = new Uri("http://3.82.16.160:4317");
+                            config.Protocol = OtlpExportProtocol.Grpc;
                         });
                 });
             return serviceCollection;
@@ -198,9 +203,10 @@ internal static class ServicesExtensions
                 )
                 .WriteTo.OpenTelemetry(options =>
                 {
-                    options.Endpoint = "http://localhost:4317";
+                    options.Endpoint = "http://3.82.16.160:4317";
                     options.IncludedData = IncludedData.MessageTemplateTextAttribute |
                         IncludedData.TraceIdField | IncludedData.SpanIdField;
+                    options.Protocol = OtlpProtocol.Grpc;
                 })
                 .CreateLogger();
             services.AddSingleton(Log.Logger);
